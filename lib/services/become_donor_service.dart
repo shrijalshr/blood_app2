@@ -1,17 +1,18 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:blood_app/utils/helper/api.dart';
 
 import '../utils/helper/global_functions.dart';
 
 class BecomeDonorService {
-  Future<void> postDonorStatus(data) async {
-    await Network().postAuthData(data, "/donor").then((res) {
-      log(res.body);
+  Future<bool> postDonorStatus(data) async {
+    bool res =
+        await Network().postAuthData(data, "/donor/changeStatus").then((res) {
+      print(res.body);
       var body = jsonDecode(res.body);
       if (res.statusCode == 200) {
         print(body);
+        return true;
       } else if (body["status"] == 401) {
         errorSnackbar("Invalid Username/Password",
             "Username or password did not match. Try again");
@@ -20,9 +21,10 @@ class BecomeDonorService {
         errorSnackbar("Invalid Login", "Please provide valid email/password.");
         return false;
       } else {
-        errorSnackbar("Something went wrong", "Please try again later");
+        errorSnackbar("Something went wron  g", "Please try again later");
         return false;
       }
     });
+    return res;
   }
 }

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Network {
-  static const String baseUrl = "http://192.168.10.46:8000/api";
+  static const String baseUrl = "http://192.168.1.84:8000/api";
   static const int TIME_OUT_DURATION = 20;
   final timeOutDuration = const Duration(seconds: TIME_OUT_DURATION);
 
@@ -23,6 +23,7 @@ class Network {
           .post(Uri.parse(url),
               body: jsonEncode(data), headers: setAuthHeaders())
           .timeout(timeOutDuration);
+
       return response;
     } on Exception {
       throw Exception("Something went wrong.  ${url.toString()}");
@@ -48,7 +49,7 @@ class Network {
     return response;
   }
 
-  Future<http.Response> postData(data, apiUrl) async {
+  Future<http.Response?> postData(data, apiUrl) async {
     var url = baseUrl + apiUrl;
     print(url);
 

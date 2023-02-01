@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:blood_app/models/donor_model.dart';
+import 'package:blood_app/models/donor_list_model.dart';
 import 'package:blood_app/utils/helper/api.dart';
 
 import '../utils/helper/global_functions.dart';
 
 class DonorService {
-  List<DonorModel> donorList = <DonorModel>[];
+  List<DonorListModel> donorList = <DonorListModel>[];
 
   Future<void> getDonorList(data) async {
     await Network().postAuthData(data, "/donor/list").then((res) {
@@ -14,8 +14,8 @@ class DonorService {
       print(body);
       if (res.statusCode == 200) {
         for (var e in body) {
-          DonorModel donor = DonorModel();
-          donor = DonorModel.fromJson(e);
+          DonorListModel donor = DonorListModel();
+          donor = DonorListModel.fromJson(e);
           donorList.add(donor);
         }
       } else if (res.statusCode == 500) {
@@ -29,4 +29,6 @@ class DonorService {
       }
     });
   }
+
+  // Future getAllDonor() {}
 }

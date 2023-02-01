@@ -34,6 +34,12 @@ addJsonToSP(name, Object object) async {
   prefs.setString(name, jsonEncode(object));
 }
 
+getJsonFromSP(name) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? objStr = prefs.getString(name);
+  return objStr;
+}
+
 void launchURL(url) async {
   if (!await launchUrl(url)) throw 'Could not launch $url';
 }

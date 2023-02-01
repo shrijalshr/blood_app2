@@ -1,4 +1,5 @@
 import 'package:blood_app/controller/donor_controller.dart';
+import 'package:blood_app/controller/request_controller.dart';
 import 'package:blood_app/models/location.model.dart';
 import 'package:blood_app/utils/helper/custom_extensions.dart';
 import 'package:blood_app/utils/widgets/dash_container.dart';
@@ -6,9 +7,10 @@ import 'package:blood_app/utils/widgets/my_dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../models/donor_list_model.dart';
 import '../utils/constants/app_constants.dart';
 import '../utils/constants/export.dart';
-import '../utils/widgets/request_tile.dart';
+import '../utils/widgets/donor_tile.dart';
 
 class SearchBlood extends StatefulWidget {
   const SearchBlood({Key? key, this.hasAppBar = false}) : super(key: key);
@@ -29,6 +31,7 @@ class _SearchBloodState extends State<SearchBlood> {
   @override
   Widget build(BuildContext context) {
     final DonorController controller = Get.put(DonorController());
+    final RequestController reqController = Get.find();
     return Scaffold(
       backgroundColor: AppColor.lightGrey,
       appBar: widget.hasAppBar!
@@ -118,7 +121,7 @@ class _SearchBloodState extends State<SearchBlood> {
                     height: 15,
                   ),
                   MyDropdownSearch<LocationModel>(
-                    itemList: MyConstants.locations,
+                    itemList: reqController.locations,
                     itemAsString: (item) => item.name!,
                     label: "Location",
                     fillColor: AppColor.white,
@@ -149,27 +152,32 @@ class _SearchBloodState extends State<SearchBlood> {
             const SizedBox(
               height: 20,
             ),
-            Flexible(
-              child: ListView.separated(
-                itemCount: 03,
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.only(bottom: 10),
-                itemBuilder: (context, index) {
-                  return RequestTile(
-                    requester: "Shrijal Shrestha",
-                    patientName: "Someone Someone",
-                    address: "Biratnagar-12",
-                    hospital: "Nobel Medical Hospital",
-                    amount: 2,
-                    email: "shrijalshrestha313@gmail.com",
-                    phoneNumber: "9804320219",
-                    bloodType: MyConstants
-                        .bloodGroups[controller.selectedBloodIndex.value],
-                  );
-                },
-                separatorBuilder: ((context, index) => const Divider()),
-              ),
-            ),
+            controller.isListLoading.value
+                ? const CircularProgressIndicator()
+                : controller.donorList.isEmpty
+                    ? Flexible(
+                        child: Center(
+                            child: Image.asset("assets/images/empty.jpg")))
+                    : Flexible(
+                        child: ListView.separated(
+                          itemCount: controller.donorList.length,
+                          physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.only(bottom: 10),
+                          itemBuilder: (context, index) {
+                            final DonorListModel donor =
+                                controller.donorList[index];
+                            return DonorTile(
+                              donorName: donor.name ?? "",
+                              address: donor.address ?? "",
+                              // email: donor.,
+                              phoneNumber: donor.phone ?? "",
+                              bloodType: donor.bloodGroup ?? "",
+                            );
+                          },
+                          separatorBuilder: ((context, index) =>
+                              const Divider()),
+                        ),
+                      ),
           ],
         ),
       ),

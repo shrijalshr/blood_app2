@@ -226,40 +226,45 @@ class RequestForm extends StatelessWidget {
                                     .add(const Duration(days: 10)),
                               ).pb(15);
                             }),
-                            MyButton.primary(
-                              onPressed: () async {
-                                if (formKey.currentState!.validate()) {
-                                  var data = {
-                                    "name":
-                                        controller.nameController.value.text,
-                                    "address":
-                                        controller.addressController.value.text,
-                                    "hospital": controller
-                                        .hospitalController.value.text,
-                                    "blood_group": controller.bloodGroup.value,
-                                    "date": formattedDateYYYYMMDD(
-                                        controller.pickedDate.value),
-                                    // "location":
-                                    //     controller.selectedLocation.value.id,
-                                    "amount":
-                                        controller.amountController.value.text,
-                                    "phone":
-                                        controller.phoneController.value.text
-                                  };
-                                  print(data);
+                            Obx(() {
+                              return MyButton.primary(
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    var data = {
+                                      "name":
+                                          controller.nameController.value.text,
+                                      "address": controller
+                                          .addressController.value.text,
+                                      "hospital": controller
+                                          .hospitalController.value.text,
+                                      "blood_group":
+                                          controller.bloodGroup.value,
+                                      "date": formattedDateYYYYMMDD(
+                                          controller.pickedDate.value),
+                                      "location":
+                                          controller.selectedLocation.value.id,
+                                      "amount": controller
+                                          .amountController.value.text,
+                                      "phone":
+                                          controller.phoneController.value.text
+                                    };
+                                    print(data);
 
-                                  controller
-                                      .postRequest(data)
-                                      .then((isSuccess) {
-                                    if (isSuccess) {
-                                      Navigator.pop(context);
+                                    await controller.postRequest(data);
+
+                                    if (controller.isRequestSuccess.value) {
+                                      if (context.mounted) {
+                                        Navigator.pop(context);
+                                      }
                                     }
-                                  });
-                                }
-                                // controller.getLocations();
-                              },
-                              label: const Text("Make Request"),
-                            )
+                                  }
+                                  // controller.getLocations();
+                                },
+                                label: controller.isPosting.value
+                                    ? const CircularProgressIndicator()
+                                    : const Text("Make Request"),
+                              );
+                            })
                           ],
                         ),
                       ),

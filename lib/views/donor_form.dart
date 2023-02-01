@@ -1,4 +1,5 @@
 import 'package:blood_app/controller/donor_form.dart';
+import 'package:blood_app/controller/request_controller.dart';
 import 'package:blood_app/models/location.model.dart';
 import 'package:blood_app/utils/constants/app_color.dart';
 import 'package:blood_app/utils/constants/app_constants.dart';
@@ -55,6 +56,7 @@ class _DonorFormState extends State<DonorForm> {
   @override
   Widget build(BuildContext context) {
     final DonorFormController controller = Get.put(DonorFormController());
+    final RequestController requestController = Get.find();
     return Scaffold(
       backgroundColor: AppColor.lightGrey,
       appBar: AppBar(
@@ -87,7 +89,7 @@ class _DonorFormState extends State<DonorForm> {
                     inputType: TextInputType.phone,
                     maxLines: 1,
                     textInputAction: TextInputAction.next,
-                    prefixIcon: const Icon(Icons.person_outline),
+                    prefixIcon: const Icon(Icons.phone_outlined),
                     validator: (value) {
                       if (value!.isEmpty || value.trim() == '') {
                         return "Please enter your phone";
@@ -132,7 +134,7 @@ class _DonorFormState extends State<DonorForm> {
                       }
                       return null;
                     },
-                    items: MyConstants.locations
+                    items: requestController.locations
                         .map((e) => DropdownMenuItem<LocationModel>(
                               value: e,
                               child: Text(
@@ -201,28 +203,37 @@ class _DonorFormState extends State<DonorForm> {
                     initialDate: DateTime.now(),
                     lastDate: DateTime.now(),
                   ).pb(10),
-                  MyButton.primary(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        var data = {
-                          "phone": phoneController.text,
-                          "address": addressController.text,
-                          "dob": formattedDateYYYYMMDD(controller.dob.value),
-                          "location": controller.selectedLocation.value.id,
-                          "blood_group": controller.bloodGroup.value,
-                          "last_donated": formattedDateYYYYMMDD(
-                              controller.lastDonatedOn.value),
-                        };
-                        print(data);
-                        controller.onSubmit(data).then((isSuccess) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomeScreen()));
-                        });
-                      }
-                    },
-                    label: const Text("Submit"),
+                  Obx(
+                    () => MyButton.primary(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          var data = {
+                            "phone": phoneController.text,
+                            "address": addressController.text,
+                            "dob": formattedDateYYYYMMDD(controller.dob.value),
+                            "location": controller.selectedLocation.value.id,
+                            "blood_group": controller.bloodGroup.value,
+                            "last_donated": formattedDateYYYYMMDD(
+                                controller.lastDonatedOn.value),
+                          };
+                          print(data);
+                          controller.onSubmit(data).then((_) {
+                            if (controller.isSuccess.value) {
+                              if (context.mounted) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const HomeScreen()));
+                              }
+                            }
+                          });
+                        }
+                      },
+                      label: controller.isSubmitting.value
+                          ? const CircularProgressIndicator()
+                          : const Text("Submit"),
+                    ),
                   )
                 ],
               ),

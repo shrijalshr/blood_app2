@@ -45,13 +45,13 @@ class RequestController extends GetxController {
     isLocationsLoading.value = false;
   }
 
-  List<RequestModel> requestList = [];
+  RxList<RequestModel> requestList = <RequestModel>[].obs;
   RxBool isLoading = false.obs;
   Future<void> getRequests() async {
     isLoading.value = true;
     RequestService service = RequestService();
     await service.getRequestList(2).then((_) {
-      requestList = service.requestList;
+      requestList.value = service.requestList;
     });
     isLoading.value = false;
   }
@@ -79,18 +79,16 @@ class RequestController extends GetxController {
     pickedDate.value = date;
   }
 
-  Future<bool> postRequest(data) async {
+  RxBool isRequestSuccess = false.obs;
+  Future<void> postRequest(data) async {
     isPosting.value = true;
     RequestService service = RequestService();
-    await service.postRequest(data).then((res) {
-      if (res.runtimeType == bool) {
-        if (res == true) {
-          getRequests();
-          return true;
-        }
+    service.postRequest(data).then((bool res) {
+      print(res);
+      if (res == true) {
+        isRequestSuccess.value = true;
       }
     });
     isPosting.value = false;
-    return false;
   }
 }

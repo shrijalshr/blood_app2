@@ -25,69 +25,98 @@ class BecomeDonorScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: AppColor.darkPrimary),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            DashContainer(
-              padding: const EdgeInsets.all(15),
-              margin: const EdgeInsets.all(15),
-              child: Column(
+        child: BecomeDonorBody(controller: controller),
+      ),
+    );
+  }
+}
+
+class BecomeDonorBody extends StatelessWidget {
+  const BecomeDonorBody({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  final BecomeDonorController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        DashContainer(
+          padding: const EdgeInsets.all(15),
+          margin: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Become a donor?",
-                              style: AppStyle.boldStyle(),
-                            ),
-                            Text(
-                              "You shall be listed as donor in future.",
-                              style: AppStyle.subLightStyle(),
-                            ),
-                          ],
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Become a donor?",
+                          style: AppStyle.boldStyle(),
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Obx(
-                            () => Switch.adaptive(
-                                value: controller.becomeDonor.value,
-                                onChanged: (value) {
-                                  controller.onSwitchToogle(value);
-                                }),
-                          ),
+                        Text(
+                          "You shall be listed as donor in future.",
+                          style: AppStyle.subLightStyle(),
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                  // Align(
-                  //   alignment: Alignment.centerRight,
-                  //   child: MyButton.primary(
-                  //     onPressed: () {},
-                  //     width: 100,
-                  //     height: 36,
-                  //     label: const Text("Proceed"),
-                  //   ),
-                  // )
+                  Expanded(
+                    flex: 1,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Obx(
+                        () => Switch.adaptive(
+                            value: controller.becomeDonor.value,
+                            onChanged: (value) {
+                              controller.onSwitchToogle(value);
+                            }),
+                      ),
+                    ),
+                  )
                 ],
               ),
-            ),
-            MyButton.primary(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const DonorForm()));
-              },
-              label: const Text("Proceed"),
-            ).ph(15),
-          ],
+              // Align(
+              //   alignment: Alignment.centerRight,
+              //   child: MyButton.primary(
+              //     onPressed: () {},
+              //     width: 100,
+              //     height: 36,
+              //     label: const Text("Proceed"),
+              //   ),
+              // )
+            ],
+          ),
         ),
-      ),
+        Obx(
+          () => MyButton.primary(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const DonorForm()));
+              // controller.onSubmit().then((_) {
+              //   if (controller.proceed.value) {
+              //     if (context.mounted) {
+              //       Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //               builder: (context) => const DonorForm()));
+              //     }
+              //   }
+
+              // });
+            },
+            label: controller.proceeding.value
+                ? const CircularProgressIndicator()
+                : const Text("Proceed"),
+          ).ph(15),
+        ),
+      ],
     );
   }
 }

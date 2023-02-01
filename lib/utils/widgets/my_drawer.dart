@@ -1,5 +1,7 @@
 import 'package:blood_app/utils/helper/custom_extensions.dart';
+import 'package:blood_app/views/donor_form.dart';
 import 'package:blood_app/views/donors_list.dart';
+import 'package:blood_app/views/profile_screen.dart';
 import 'package:blood_app/views/search_blood.dart';
 import 'package:flutter/material.dart';
 
@@ -67,7 +69,10 @@ class MyDrawer extends StatelessWidget {
                   color: AppColor.darkPrimary,
                 ),
                 onTap: () {
-                  // Navigator.pushNamed(context, Routes.profile);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfileScreen()));
                 },
               ),
               ListTile(
@@ -96,6 +101,19 @@ class MyDrawer extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const DonorListScreen()));
+                },
+              ),
+              ListTile(
+                title: const Text("Become a Donor"),
+                leading: const Icon(
+                  Icons.handshake_outlined,
+                  color: AppColor.darkPrimary,
+                ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DonorForm()));
                 },
               ),
               ListTile(

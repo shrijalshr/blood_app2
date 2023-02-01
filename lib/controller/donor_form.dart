@@ -25,9 +25,12 @@ class DonorFormController extends GetxController {
     lastDonatedOn.value = date;
   }
 
-  Future<bool> onSubmit(data) async {
+  RxBool isSubmitting = false.obs;
+  RxBool isSuccess = false.obs;
+  Future onSubmit(data) async {
+    isSubmitting.value = true;
     DonorFormService service = DonorFormService();
-    bool isSuccess = await service.postDonorData(data);
-    return isSuccess;
+    isSuccess.value = await service.postDonorData(data);
+    isSubmitting.value = false;
   }
 }

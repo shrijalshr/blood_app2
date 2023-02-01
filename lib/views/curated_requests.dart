@@ -1,4 +1,5 @@
 import 'package:blood_app/controller/request_controller.dart';
+import 'package:blood_app/models/request_mode.dart';
 import 'package:blood_app/utils/helper/custom_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,17 +42,19 @@ class CuratedRequests extends StatelessWidget {
                           )
                         : ListView.builder(
                             physics: const BouncingScrollPhysics(),
-                            itemCount: 10,
+                            itemCount: controller.requestList.length,
                             itemBuilder: (context, index) {
-                              return const RequestTile(
-                                requester: "Shrijal Shrestha",
+                              final RequestModel req =
+                                  controller.requestList[index];
+                              return RequestTile(
+                                requester: req.name ?? "",
                                 patientName: "Someone Someone",
-                                address: "Biratnagar-12",
-                                hospital: "Nobel Medical Hospital",
-                                amount: 2,
+                                address: req.address ?? "",
+                                hospital: req.hospital ?? "",
+                                amount: req.amount ?? 1,
                                 email: "shrijalshrestha313@gmail.com",
-                                phoneNumber: "9804320218",
-                                bloodType: "A+",
+                                phoneNumber: req.phone ?? "",
+                                bloodType: req.bloodGroup ?? "",
                               ).pb(15);
                             });
               }),

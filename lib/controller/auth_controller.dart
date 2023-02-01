@@ -1,7 +1,7 @@
 import 'package:blood_app/models/location.model.dart';
 import 'package:blood_app/models/user_model.dart';
 import 'package:blood_app/services/location_service.dart';
-import 'package:blood_app/services/login_service.dart';
+import 'package:blood_app/services/auth_service.dart';
 import 'package:blood_app/utils/helper/api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -17,7 +17,7 @@ class AuthController extends GetxController {
   Future<bool> login(String username, String password) async {
     loginBtnPressed.value = true;
     AuthService service = AuthService();
-    bool isSuccessful = await service.login("shrijalshr", "password");
+    bool isSuccessful = await service.login(username, password);
     isLoggedIn.value = isSuccessful;
     loginBtnPressed.value = false;
     if (isSuccessful) {
@@ -25,6 +25,10 @@ class AuthController extends GetxController {
       await service.getUser().then((_) {
         user = service.user;
       });
+
+      if (user.hasDonor == true) {
+        service.getDonorData();
+      }
     }
     return isSuccessful;
   }
@@ -47,9 +51,16 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<bool> signup(data) async {
+  RxBool isSignUpLoading = false.obs;
+  RxBool isSignUpSuccess = false.obs;
+  Future<void> signup(data) async {
+    isSignUpLoading.value = true;
     AuthService service = AuthService();
-    bool isSuccess = await service.register(data);
-    return isSuccess;
+    service.register(data).then((res) {
+      if (res) {
+        isSignUpSuccess.value = res;
+      }
+    });
+    isSignUpLoading.value = false;
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:blood_app/models/request_mode.dart';
 import 'package:blood_app/utils/helper/api.dart';
@@ -9,10 +8,10 @@ import '../utils/helper/global_functions.dart';
 class RequestService {
   List<RequestModel> requestList = <RequestModel>[];
 
-  Future postRequest(data) async {
-    Network().postAuthData(data, "/request/add").then((res) {
+  Future<bool> postRequest(data) async {
+    bool res = await Network().postAuthData(data, "/request/add").then((res) {
       var body = jsonDecode(res.body);
-      log(body);
+      print(body);
       if (res.statusCode == 200) {
         successSnackBar("Successfully Posted",
             "Your request has been successfully posted.");
@@ -20,13 +19,17 @@ class RequestService {
       } else if (res.statusCode == 500) {
         errorSnackbar("Failed to load",
             "You have encountered unexpected error. Please try again.");
+        return false;
       } else if (res.statusCode == 400) {
         errorSnackbar("Failed to Load", "You are not authorized.");
+        return false;
       } else {
         errorSnackbar(
             "Failed to load", "Something went wrong. Please try again.");
+        return false;
       }
     });
+    return res;
   }
 
   Future<void> getRequestList(int type) async {

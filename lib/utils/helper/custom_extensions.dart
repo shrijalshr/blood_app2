@@ -89,3 +89,14 @@ extension PasswordValidation on String {
     return true;
   }
 }
+
+extension ContextExtensions on BuildContext {
+  bool get mounted {
+    try {
+      widget;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+}

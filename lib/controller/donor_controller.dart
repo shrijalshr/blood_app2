@@ -1,5 +1,5 @@
 import 'package:blood_app/services/donor_service.dart';
-import '../models/donor_model.dart';
+import '../models/donor_list_model.dart';
 import 'package:get/get.dart';
 
 class DonorController extends GetxController {
@@ -8,12 +8,27 @@ class DonorController extends GetxController {
     selectedBloodIndex.value = selected ? index : 0;
   }
 
-  List<DonorModel> donorList = <DonorModel>[].obs;
+  RxBool isListLoading = false.obs;
+  List<DonorListModel> donorList = <DonorListModel>[].obs;
   getDonors(data) async {
+    isListLoading.value = true;
     DonorService service = DonorService();
     await service
         .getDonorList({"location": "1", "blood_request": "A+"}).then((_) {
       donorList = service.donorList;
     });
+    isListLoading.value = false;
   }
+
+  // RxBool isAllListLoading = false.obs;
+  // List<DonorModel> allDonorList = <DonorModel>[].obs;
+  // getAllDonors(data) async {
+  //   isAllListLoading.value = true;
+  //   DonorService service = DonorService();
+  //   await service
+  //       .getALlDonorList({"location": "1", "blood_request": "A+"}).then((_) {
+  //     donorList = service.donorList;
+  //   });
+  //   isAllListLoading.value = false;
+  // }
 }

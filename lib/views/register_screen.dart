@@ -3,7 +3,7 @@ import 'package:blood_app/utils/helper/custom_extensions.dart';
 import 'package:blood_app/utils/widgets/dash_container.dart';
 import 'package:blood_app/utils/widgets/my_textfield.dart';
 import 'package:blood_app/utils/widgets/password_field.dart';
-import 'package:blood_app/views/become_donor.dart';
+import 'package:blood_app/views/donor_form.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -176,38 +176,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return null;
                     },
                   ).pb(20),
-                  MyButton.primary(
-                    onPressed: () async {
-                      print(username);
-                      if (_formKey.currentState!.validate()) {
-                        Map<String, String> data = {
-                          'username': username!.text,
-                          'fname': firstName!.text,
-                          'lname': lastName!.text,
-                          'email': email!.text,
-                          'password': password!.text,
-                          'confirm_password': confirmPassword!.text,
-                        };
-                        print(data);
-                        //   await controller.signup(data).then((isSuccess) {
-                        //     if (isSuccess) {
-                        //       Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(
-                        //               builder: (context) =>
-                        //                   const BecomeDonorScreen()));
-                        //     }
-                        //   }).onError((error, stackTrace) => errorSnackbar(
-                        //       "Something went wrong!", error.toString()));
-                      }
+                  Obx(() {
+                    return MyButton.primary(
+                      onPressed: () async {
+                        print(username);
+                        if (_formKey.currentState!.validate()) {
+                          Map<String, String> data = {
+                            'username': username!.text,
+                            'fname': firstName!.text,
+                            'lname': lastName!.text,
+                            'email': email!.text,
+                            'password': password!.text,
+                            'confirm_password': confirmPassword!.text,
+                          };
+                          print(data);
+                          await controller.signup(data);
+                          if (controller.isSignUpSuccess.value) {
+                            if (context.mounted) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const DonorForm()));
+                            }
+                          }
+                        }
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BecomeDonorScreen()));
-                    },
-                    label: const Text("Join Us"),
-                  ).pb(10),
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const BecomeDonorScreen()));
+                      },
+                      label: controller.isSignUpLoading.value
+                          ? const CircularProgressIndicator()
+                          : const Text("Join Us"),
+                    ).pb(10);
+                  }),
                 ],
               ),
             )),

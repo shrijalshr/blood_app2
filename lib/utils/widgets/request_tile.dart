@@ -10,7 +10,7 @@ class RequestTile extends StatelessWidget {
   final String requester;
   final String patientName;
   final String bloodType;
-  final double? amount;
+  final int? amount;
   final String phoneNumber;
   final String address;
   final String hospital;

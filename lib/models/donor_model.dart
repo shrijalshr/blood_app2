@@ -1,76 +1,65 @@
 class DonorModel {
   DonorModel({
     this.id,
-    this.name,
     this.phone,
-    this.hospital,
+    this.dob,
     this.address,
+    this.location,
     this.bloodGroup,
     this.locationName,
-    this.amount,
-    this.fname,
-    this.lname,
+    this.userId,
   });
 
   final int? id;
-  final String? name;
   final String? phone;
-  final String? hospital;
+  final DateTime? dob;
   final String? address;
+  final int? location;
   final String? bloodGroup;
   final String? locationName;
-  final int? amount;
-  final String? fname;
-  final String? lname;
+  final String? userId;
 
   DonorModel copyWith({
     int? id,
-    String? name,
     String? phone,
-    String? hospital,
+    DateTime? dob,
     String? address,
+    int? location,
     String? bloodGroup,
     String? locationName,
-    int? amount,
-    String? fname,
-    String? lname,
+    String? userId,
   }) =>
       DonorModel(
         id: id ?? this.id,
-        name: name ?? this.name,
         phone: phone ?? this.phone,
-        hospital: hospital ?? this.hospital,
+        dob: dob ?? this.dob,
         address: address ?? this.address,
+        location: location ?? this.location,
         bloodGroup: bloodGroup ?? this.bloodGroup,
         locationName: locationName ?? this.locationName,
-        amount: amount ?? this.amount,
-        fname: fname ?? this.fname,
-        lname: lname ?? this.lname,
+        userId: userId ?? this.userId,
       );
 
   factory DonorModel.fromJson(Map<String, dynamic> json) => DonorModel(
         id: json["id"],
-        name: json["name"],
         phone: json["phone"],
-        hospital: json["hospital"],
+        dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
         address: json["address"],
+        location: json["location"],
         bloodGroup: json["blood_group"],
         locationName: json["location_name"],
-        amount: json["amount"],
-        fname: json["fname"],
-        lname: json["lname"],
+        userId: json["user_id"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
         "phone": phone,
-        "hospital": hospital,
+        "dob":
+            "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
         "address": address,
+        "location": location,
         "blood_group": bloodGroup,
         "location_name": locationName,
-        "amount": amount,
-        "fname": fname,
-        "lname": lname,
+        "user_id": userId,
       };
 }
