@@ -38,7 +38,6 @@ class RequestController extends GetxController {
     isLocationsLoading.value = true;
     LocationService service = LocationService();
     await service.getLocation();
-
     locations.assignAll(service.locationList);
     locations.insert(0, selectedLocation.value);
     print("Location from Req Controller: $locations");
