@@ -13,8 +13,7 @@ class DonorController extends GetxController {
   getDonors(data) async {
     isListLoading.value = true;
     DonorService service = DonorService();
-    await service
-        .getDonorList({"location": "1", "blood_request": "A+"}).then((_) {
+    await service.getDonorList(data).then((_) {
       donorList = service.donorList;
     });
     isListLoading.value = false;

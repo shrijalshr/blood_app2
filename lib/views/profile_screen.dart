@@ -27,61 +27,66 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
           child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 24,
-            ),
-            const CircleAvatar(
-              backgroundImage: AssetImage("assets/images/profile.png"),
-              radius: 32,
-            ).pb(16),
-            Text(
-              "${controller.user.fname} ${controller.user.lname}",
-              style: AppStyle.headingStyle(),
-            ),
-            Text(
-              "@${controller.user.username}",
-              style: AppStyle.subLightStyle(),
-            ),
-            controller.user.hasDonor == true
-                ? Container(
-                    child: Column(
-                      children: [
-                        MyTextField(
-                          label: "Phone",
-                          initialText: controller.donorData.phone,
-                          readOnly: true,
-                        ).pb(16),
-                        MyTextField(
-                          label: "Blood Group",
-                          initialText: controller.donorData.bloodGroup,
-                          readOnly: true,
-                        ).pb(16),
-                        MyTextField(
-                          label: "Location",
-                          initialText: controller.donorData.locationName,
-                          readOnly: true,
-                        ).pb(16),
-                        MyTextField(
-                          label: "Address",
-                          initialText: controller.donorData.address,
-                          readOnly: true,
-                        ).pb(16),
-                        MyTextField(
-                          label: "Date of Birth",
-                          initialText:
-                              formattedDateYYYYMMDD(controller.donorData.dob),
-                          readOnly: true,
-                        ).pb(16),
-                      ],
+        child: Obx(
+          () => controller.isLoading.value
+              ? const CircularProgressIndicator()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 24,
                     ),
-                  ).pa(16)
-                : BecomeDonorBody(
-                    controller: Get.put<BecomeDonorController>(
-                        BecomeDonorController())),
-          ],
+                    const CircleAvatar(
+                      backgroundImage: AssetImage("assets/images/profile.png"),
+                      radius: 32,
+                    ).pb(16),
+                    Text(
+                      "${controller.user.fname} ${controller.user.lname}",
+                      style: AppStyle.headingStyle(),
+                    ),
+                    Text(
+                      "@${controller.user.username}",
+                      style: AppStyle.subLightStyle(),
+                    ),
+                    controller.user.hasDonor == true
+                        ? Container(
+                            child: Column(
+                              children: [
+                                MyTextField(
+                                  label: "Phone",
+                                  initialText: controller.donorData.phone,
+                                  readOnly: true,
+                                ).pb(16),
+                                MyTextField(
+                                  label: "Blood Group",
+                                  initialText: controller.donorData.bloodGroup,
+                                  readOnly: true,
+                                ).pb(16),
+                                MyTextField(
+                                  label: "Location",
+                                  initialText:
+                                      controller.donorData.locationName,
+                                  readOnly: true,
+                                ).pb(16),
+                                MyTextField(
+                                  label: "Address",
+                                  initialText: controller.donorData.address,
+                                  readOnly: true,
+                                ).pb(16),
+                                MyTextField(
+                                  label: "Date of Birth",
+                                  initialText: formattedDateYYYYMMDD(
+                                      controller.donorData.dob),
+                                  readOnly: true,
+                                ).pb(16),
+                              ],
+                            ),
+                          ).pa(16)
+                        : BecomeDonorBody(
+                            controller: Get.put<BecomeDonorController>(
+                                BecomeDonorController())),
+                  ],
+                ),
         ),
       )),
     );

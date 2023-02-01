@@ -1,9 +1,13 @@
+import 'package:blood_app/controller/auth_controller.dart';
 import 'package:blood_app/utils/helper/custom_extensions.dart';
 import 'package:blood_app/views/donor_form.dart';
 import 'package:blood_app/views/donors_list.dart';
+import 'package:blood_app/views/home_screen.dart';
+import 'package:blood_app/views/login_screen.dart';
 import 'package:blood_app/views/profile_screen.dart';
 import 'package:blood_app/views/search_blood.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../constants/export.dart';
 
@@ -14,42 +18,49 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthController authController = Get.find<AuthController>();
+
     return SafeArea(
       child: Column(
         children: [
           DrawerHeader(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const CircleAvatar(
-                backgroundColor: AppColor.white,
-                radius: 30,
-                child: Icon(
-                  Icons.person,
-                  size: 40,
+              child: GestureDetector(
+            onTap: () {
+              Get.to(() => const ProfileScreen());
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const CircleAvatar(
+                  backgroundColor: AppColor.white,
+                  radius: 30,
+                  child: Icon(
+                    Icons.person,
+                    size: 40,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Shrijal Shrestha",
-                    style: AppStyle.headingStyle(
-                        color: AppColor.textColor, fontSize: 20),
-                  ).pb(4),
-                  Text(
-                    "9804320218",
-                    style: AppStyle.subBoldStyle(
-                        fontSize: 14, color: AppColor.grey),
-                  )
-                ],
-              ),
-            ],
+                const SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${authController.user.fname} ${authController.user.lname}",
+                      style: AppStyle.headingStyle(
+                          color: AppColor.textColor, fontSize: 20),
+                    ).pb(4),
+                    // Text(
+                    //   "9804320218",
+                    //   style: AppStyle.subBoldStyle(
+                    //       fontSize: 14, color: AppColor.grey),
+                    // )
+                  ],
+                ),
+              ],
+            ),
           )),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,7 +71,9 @@ class MyDrawer extends StatelessWidget {
                   Icons.home_outlined,
                   color: AppColor.darkPrimary,
                 ),
-                onTap: () {},
+                onTap: () {
+                  Get.off(() => const HomeScreen());
+                },
               ),
               ListTile(
                 title: const Text("Profile"),
@@ -69,10 +82,7 @@ class MyDrawer extends StatelessWidget {
                   color: AppColor.darkPrimary,
                 ),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProfileScreen()));
+                  Get.to(() => const ProfileScreen());
                 },
               ),
               ListTile(
@@ -82,12 +92,7 @@ class MyDrawer extends StatelessWidget {
                   color: AppColor.darkPrimary,
                 ),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SearchBlood(
-                                hasAppBar: true,
-                              )));
+                  Get.to(() => const SearchBlood());
                 },
               ),
               ListTile(
@@ -97,10 +102,7 @@ class MyDrawer extends StatelessWidget {
                   color: AppColor.darkPrimary,
                 ),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DonorListScreen()));
+                  Get.to(const DonorListScreen());
                 },
               ),
               ListTile(
@@ -110,10 +112,7 @@ class MyDrawer extends StatelessWidget {
                   color: AppColor.darkPrimary,
                 ),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DonorForm()));
+                  Get.to(const DonorForm());
                 },
               ),
               ListTile(
@@ -130,7 +129,15 @@ class MyDrawer extends StatelessWidget {
                   Icons.logout_outlined,
                   color: AppColor.darkPrimary,
                 ),
-                onTap: () {},
+                onTap: () async {
+                  final AuthController controller = Get.find<AuthController>();
+                  bool isLoggedOut = await controller.logOut();
+                  if (isLoggedOut) {
+                    if (context.mounted) {
+                      Get.offAll(const LoginScreen());
+                    }
+                  }
+                },
               ),
             ],
           ),

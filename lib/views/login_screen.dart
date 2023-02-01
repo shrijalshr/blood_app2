@@ -110,17 +110,10 @@ class _LoginFormState extends State<LoginForm> {
                       .login(username!.text, password!.text)
                       .then((value) {
                     if (controller.isLoggedIn.value) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()));
+                      Get.off(() => const HomeScreen());
                     }
                   });
                 }
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => const HomeScreen()));
               },
               label: Obx(
                 () => controller.loginBtnPressed.value
@@ -130,13 +123,13 @@ class _LoginFormState extends State<LoginForm> {
                     : const Text("Login"),
               ),
             ).pb(10),
-            GestureDetector(
-              onTap: () {},
-              child: Text(
-                'Forgot your password?',
-                style: AppStyle.regularStyle(),
-              ).pb(10),
-            ),
+            // GestureDetector(
+            //   onTap: () {},
+            //   child: Text(
+            //     'Forgot your password?',
+            //     style: AppStyle.regularStyle(),
+            //   ).pb(10),
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -146,10 +139,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RegisterScreen()));
+                    Get.to(() => const RegisterScreen());
                   },
                   child: Text(
                     "Join Us",
@@ -162,11 +152,6 @@ class _LoginFormState extends State<LoginForm> {
         ),
       ),
     );
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
 

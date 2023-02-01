@@ -2,6 +2,7 @@ import 'package:blood_app/views/chat_list_sceen.dart';
 import 'package:blood_app/views/request_form.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../utils/constants/export.dart';
 import '../utils/widgets/bottom_nav_bar.dart';
 import '../utils/widgets/my_drawer.dart';
@@ -91,8 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => RequestForm()));
+            Get.to(() => RequestForm());
           },
           backgroundColor: AppColor.darkPrimary,
           label: const Text("Request"),

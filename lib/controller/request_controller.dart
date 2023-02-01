@@ -28,6 +28,7 @@ class RequestController extends GetxController {
     hospitalController.dispose();
     addressController.dispose();
     phoneController.dispose();
+
     super.onClose();
   }
 
@@ -51,9 +52,10 @@ class RequestController extends GetxController {
     isLoading.value = true;
     RequestService service = RequestService();
     await service.getRequestList(2).then((_) {
-      requestList.value = service.requestList;
+      requestList.assignAll(service.requestList);
     });
     isLoading.value = false;
+    update();
   }
 
   late TextEditingController nameController = TextEditingController();

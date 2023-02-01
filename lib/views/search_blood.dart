@@ -143,6 +143,7 @@ class _SearchBloodState extends State<SearchBlood> {
                         "blood_request": MyConstants
                             .bloodGroups[controller.selectedBloodIndex.value],
                       };
+                      print(data);
                       controller.getDonors(data);
                     },
                   ),
@@ -153,7 +154,7 @@ class _SearchBloodState extends State<SearchBlood> {
               height: 20,
             ),
             controller.isListLoading.value
-                ? const CircularProgressIndicator()
+                ? const Center(child: CircularProgressIndicator())
                 : controller.donorList.isEmpty
                     ? Flexible(
                         child: Center(

@@ -13,9 +13,11 @@ class ProfileController extends GetxController {
     super.onInit();
   }
 
+  RxBool isLoading = false.obs;
   UserModel user = UserModel();
   RxBool isDonor = false.obs;
   getUserDetail() async {
+    isLoading.value = true;
     String userStr = await getJsonFromSP("user");
     var userObj = json.decode(userStr);
     user = UserModel.fromJson(userObj);
@@ -23,6 +25,8 @@ class ProfileController extends GetxController {
     if (isDonor.value) {
       getDonorDetail();
     }
+    isLoading.value = false;
+
     print(user.toString());
   }
 

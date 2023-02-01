@@ -36,8 +36,13 @@ class CuratedRequests extends StatelessWidget {
                     ? const Center(child: CircularProgressIndicator())
                     : controller.requestList.isEmpty
                         ? SingleChildScrollView(
-                            child: Center(
-                              child: Image.asset("assets/images/empty.jpg"),
+                            physics: const BouncingScrollPhysics(),
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Image.asset("assets/images/empty.jpg"),
+                                ),
+                              ],
                             ),
                           )
                         : ListView.builder(

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../models/single_chat_list_model.dart';
 
-class ChatControlelr extends GetxController {
+class ChatController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
@@ -12,6 +12,7 @@ class ChatControlelr extends GetxController {
     super.onInit();
   }
 
+  RxBool isMessageListLoading = false.obs;
   RxList<ChatListModel> chatList = <ChatListModel>[].obs;
   Future getMessageList() async {
     ChatService service = ChatService();
@@ -21,11 +22,20 @@ class ChatControlelr extends GetxController {
     }
   }
 
+  RxBool isSingleChatListLoading = false.obs;
   RxList<SingleChatListModel> singleChatList = <SingleChatListModel>[].obs;
-
   Future getSingleChatList(data) async {
     ChatService service = ChatService();
     bool isSuccess = await service.getSingleChatList(data);
-    if (isSuccess) {}
+    if (isSuccess) {
+      singleChatList.assignAll(service.singleChatList);
+    }
+  }
+
+  RxBool isSent = false.obs;
+  Future sendMessage(data) async {
+    ChatService service = ChatService();
+    bool isSuccess = await service.sendMessage(data);
+    isSent.value = isSuccess;
   }
 }

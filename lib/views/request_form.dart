@@ -30,7 +30,7 @@ class RequestForm extends StatelessWidget {
           titleTextStyle: AppStyle.headingStyle(color: AppColor.darkPrimary),
           leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Get.back();
               },
               color: AppColor.darkPrimary,
               icon: const Icon(Icons.arrow_back)),
@@ -254,7 +254,7 @@ class RequestForm extends StatelessWidget {
 
                                     if (controller.isRequestSuccess.value) {
                                       if (context.mounted) {
-                                        Navigator.pop(context);
+                                        Get.back();
                                       }
                                     }
                                   }
