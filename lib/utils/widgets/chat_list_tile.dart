@@ -1,5 +1,6 @@
 import 'package:blood_app/utils/helper/custom_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../views/chat_screen.dart';
 import '../constants/app_color.dart';
@@ -10,29 +11,31 @@ class ChatListTile extends StatelessWidget {
   const ChatListTile({
     Key? key,
     required this.name,
-    required this.imgPath,
+    required this.uid,
   }) : super(key: key);
 
   final String name;
-  final String imgPath;
+  final int uid;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ChatScreen()));
+        Get.to(() => ChatScreen(name: name, uid: uid));
       },
       child: DashContainer(
         padding: const EdgeInsets.all(15),
         color: AppColor.white,
         child: Row(
           children: [
-            const Expanded(
+            Expanded(
               flex: 1,
               child: CircleAvatar(
-                backgroundImage: AssetImage("assets/images/completed.jpg"),
                 radius: 20,
+                child: Text(
+                  name.characters.first,
+                  style: AppStyle.boldStyle(),
+                ),
               ),
             ),
             Expanded(
@@ -47,10 +50,6 @@ class ChatListTile extends StatelessWidget {
                       Text(
                         name,
                         style: AppStyle.boldStyle(),
-                      ),
-                      Text(
-                        "2 mins ago",
-                        style: AppStyle.subLightStyle(),
                       ),
                     ],
                   ).pb(5),

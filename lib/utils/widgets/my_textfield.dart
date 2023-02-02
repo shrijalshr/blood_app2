@@ -71,7 +71,7 @@ class MyTextField extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius ?? 10),
           ),
-          labelText: label ?? 'Username',
+          labelText: label,
           hintText: hintText,
           prefixIcon: prefixIcon,
           labelStyle: const TextStyle(fontSize: 15),

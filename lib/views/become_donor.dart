@@ -4,6 +4,7 @@ import 'package:blood_app/utils/constants/app_styles.dart';
 import 'package:blood_app/utils/helper/custom_extensions.dart';
 import 'package:blood_app/utils/widgets/dash_container.dart';
 import 'package:blood_app/views/donor_form.dart';
+import 'package:blood_app/views/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +15,6 @@ class BecomeDonorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BecomeDonorController controller = Get.put(BecomeDonorController());
     return Scaffold(
       backgroundColor: AppColor.lightGrey,
       appBar: AppBar(
@@ -24,8 +24,8 @@ class BecomeDonorScreen extends StatelessWidget {
         titleTextStyle: AppStyle.headingStyle(color: AppColor.darkPrimary),
         iconTheme: const IconThemeData(color: AppColor.darkPrimary),
       ),
-      body: SingleChildScrollView(
-        child: BecomeDonorBody(controller: controller),
+      body: const SingleChildScrollView(
+        child: BecomeDonorBody(),
       ),
     );
   }
@@ -34,13 +34,11 @@ class BecomeDonorScreen extends StatelessWidget {
 class BecomeDonorBody extends StatelessWidget {
   const BecomeDonorBody({
     Key? key,
-    required this.controller,
   }) : super(key: key);
-
-  final BecomeDonorController controller;
 
   @override
   Widget build(BuildContext context) {
+    final BecomeDonorController controller = Get.put(BecomeDonorController());
     return Column(
       children: [
         DashContainer(
@@ -75,7 +73,7 @@ class BecomeDonorBody extends StatelessWidget {
                         () => Switch.adaptive(
                             value: controller.becomeDonor.value,
                             onChanged: (value) {
-                              controller.onSwitchToogle(value);
+                              controller.onSwitchToggle(value);
                             }),
                       ),
                     ),
@@ -97,19 +95,15 @@ class BecomeDonorBody extends StatelessWidget {
         Obx(
           () => MyButton.primary(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const DonorForm()));
-              // controller.onSubmit().then((_) {
-              //   if (controller.proceed.value) {
-              //     if (context.mounted) {
-              //       Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //               builder: (context) => const DonorForm()));
-              //     }
-              //   }
+              controller.onSubmit();
 
-              // });
+              if (controller.becomeDonor.value) {
+                Get.to(() => const DonorForm(
+                      isDonor: false,
+                    ));
+              } else {
+                Get.to(() => const HomeScreen());
+              }
             },
             label: controller.proceeding.value
                 ? const CircularProgressIndicator()

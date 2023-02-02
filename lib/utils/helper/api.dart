@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Network {
-  static const String baseUrl = "http://192.168.1.84:8000/api";
+  static const String baseUrl = "http://192.168.254.167:8000/api";
   static const int TIME_OUT_DURATION = 20;
   final timeOutDuration = const Duration(seconds: TIME_OUT_DURATION);
 

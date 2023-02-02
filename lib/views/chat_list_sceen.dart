@@ -31,14 +31,22 @@ class ChatListScreen extends StatelessWidget {
           return controller.isMessageListLoading.value
               ? const Center(child: CircularProgressIndicator())
               : controller.chatList.isEmpty
-                  ? Center(child: Image.asset("assets/images/empty.jpg"))
+                  ? Center(
+                      child: Image.asset("assets/images/empty.jpg"),
+                    )
                   : ListView.separated(
                       itemBuilder: (context, index) {
                         final ChatListModel chat = controller.chatList[index];
-                        return ChatListTile(name: chat.name ?? "", imgPath: "");
+                        return ChatListTile(
+                          name: chat.name == ''
+                              ? "Unknown"
+                              : chat.name ?? "Unknown",
+                          uid: chat.uid ?? 0,
+                        );
                       },
                       separatorBuilder: (context, index) => const Divider(),
-                      itemCount: controller.chatList.length);
+                      itemCount: controller.chatList.length,
+                    );
         }));
   }
 }

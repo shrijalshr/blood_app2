@@ -1,12 +1,27 @@
+import 'dart:convert';
+
+import 'package:blood_app/models/user_model.dart';
 import 'package:blood_app/services/become_donor_service.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BecomeDonorController extends GetxController {
+  late UserModel user;
+  getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userStr = prefs.getString("user");
+    if (userStr != null) {
+      var userJson = jsonDecode(userStr);
+      user = UserModel.fromJson(userJson);
+      becomeDonor.value = user.hasDonor ?? false;
+    }
+    update();
+  }
+
   RxBool becomeDonor = false.obs;
 
-  onSwitchToogle(value) {
+  onSwitchToggle(value) {
     becomeDonor.value = value;
-    print(becomeDonor);
   }
 
   RxBool proceed = false.obs;

@@ -28,7 +28,6 @@ class RequestController extends GetxController {
     hospitalController.dispose();
     addressController.dispose();
     phoneController.dispose();
-
     super.onClose();
   }
 
@@ -50,9 +49,14 @@ class RequestController extends GetxController {
   Future<void> getRequests() async {
     isLoading.value = true;
     RequestService service = RequestService();
-    await service.getRequestList(2).then((_) {
-      requestList.assignAll(service.requestList);
+    await service.getRequestList(2).then((res) {
+      if (res) {
+        requestList.assignAll(service.requestList);
+      }
+      print("Request list from controller 1 $requestList");
     });
+    print("Request list from controller 2 $requestList");
+
     isLoading.value = false;
     update();
   }
@@ -80,16 +84,16 @@ class RequestController extends GetxController {
     pickedDate.value = date;
   }
 
-  RxBool isRequestSuccess = false.obs;
   Future<void> postRequest(data) async {
     isPosting.value = true;
     RequestService service = RequestService();
     service.postRequest(data).then((bool res) {
       print(res);
       if (res == true) {
-        isRequestSuccess.value = true;
+        Get.back();
       }
     });
     isPosting.value = false;
+    update();
   }
 }

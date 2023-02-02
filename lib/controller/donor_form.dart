@@ -1,5 +1,6 @@
 import 'package:blood_app/models/location.model.dart';
 import 'package:blood_app/services/donor_form_service.dart';
+import 'package:blood_app/views/home_screen.dart';
 import 'package:get/get.dart';
 
 class DonorFormController extends GetxController {
@@ -26,11 +27,14 @@ class DonorFormController extends GetxController {
   }
 
   RxBool isSubmitting = false.obs;
-  RxBool isSuccess = false.obs;
   Future onSubmit(data) async {
     isSubmitting.value = true;
     DonorFormService service = DonorFormService();
-    isSuccess.value = await service.postDonorData(data);
+    bool isSuccess = await service.postDonorData(data);
+    if (isSuccess) {
+      Get.off(const HomeScreen());
+    }
+
     isSubmitting.value = false;
   }
 }

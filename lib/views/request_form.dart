@@ -251,12 +251,6 @@ class RequestForm extends StatelessWidget {
                                     print(data);
 
                                     await controller.postRequest(data);
-
-                                    if (controller.isRequestSuccess.value) {
-                                      if (context.mounted) {
-                                        Get.back();
-                                      }
-                                    }
                                   }
                                   // controller.getLocations();
                                 },

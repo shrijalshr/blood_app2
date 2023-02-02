@@ -1,4 +1,3 @@
-import 'package:blood_app/controller/become_donor_controller.dart';
 import 'package:blood_app/controller/profile_controller.dart';
 import 'package:blood_app/utils/helper/custom_extensions.dart';
 import 'package:blood_app/utils/helper/global_functions.dart';
@@ -49,42 +48,37 @@ class ProfileScreen extends StatelessWidget {
                       style: AppStyle.subLightStyle(),
                     ),
                     controller.user.hasDonor == true
-                        ? Container(
-                            child: Column(
-                              children: [
-                                MyTextField(
-                                  label: "Phone",
-                                  initialText: controller.donorData.phone,
-                                  readOnly: true,
-                                ).pb(16),
-                                MyTextField(
-                                  label: "Blood Group",
-                                  initialText: controller.donorData.bloodGroup,
-                                  readOnly: true,
-                                ).pb(16),
-                                MyTextField(
-                                  label: "Location",
-                                  initialText:
-                                      controller.donorData.locationName,
-                                  readOnly: true,
-                                ).pb(16),
-                                MyTextField(
-                                  label: "Address",
-                                  initialText: controller.donorData.address,
-                                  readOnly: true,
-                                ).pb(16),
-                                MyTextField(
-                                  label: "Date of Birth",
-                                  initialText: formattedDateYYYYMMDD(
-                                      controller.donorData.dob),
-                                  readOnly: true,
-                                ).pb(16),
-                              ],
-                            ),
+                        ? Column(
+                            children: [
+                              MyTextField(
+                                label: "Phone",
+                                initialText: controller.donorData.phone,
+                                readOnly: true,
+                              ).pb(16),
+                              MyTextField(
+                                label: "Blood Group",
+                                initialText: controller.donorData.bloodGroup,
+                                readOnly: true,
+                              ).pb(16),
+                              MyTextField(
+                                label: "Location",
+                                initialText: controller.donorData.locationName,
+                                readOnly: true,
+                              ).pb(16),
+                              MyTextField(
+                                label: "Address",
+                                initialText: controller.donorData.address,
+                                readOnly: true,
+                              ).pb(16),
+                              MyTextField(
+                                label: "Date of Birth",
+                                initialText: formattedDateYYYYMMDD(
+                                    controller.donorData.dob),
+                                readOnly: true,
+                              ).pb(16),
+                            ],
                           ).pa(16)
-                        : BecomeDonorBody(
-                            controller: Get.put<BecomeDonorController>(
-                                BecomeDonorController())),
+                        : const BecomeDonorBody(),
                   ],
                 ),
         ),

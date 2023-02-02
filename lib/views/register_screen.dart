@@ -3,7 +3,6 @@ import 'package:blood_app/utils/helper/custom_extensions.dart';
 import 'package:blood_app/utils/widgets/dash_container.dart';
 import 'package:blood_app/utils/widgets/my_textfield.dart';
 import 'package:blood_app/utils/widgets/password_field.dart';
-import 'package:blood_app/views/donor_form.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -191,20 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           };
                           print(data);
                           await controller.signup(data);
-                          if (controller.isSignUpSuccess.value) {
-                            if (context.mounted) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const DonorForm()));
-                            }
-                          }
                         }
-
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const BecomeDonorScreen()));
                       },
                       label: controller.isSignUpLoading.value
                           ? const CircularProgressIndicator()

@@ -72,10 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ChatListScreen()));
+                  Get.to(() => const ChatListScreen());
                 },
                 icon: const Icon(
                   Icons.chat_bubble_outline_rounded,

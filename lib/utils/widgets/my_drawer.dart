@@ -1,8 +1,7 @@
 import 'package:blood_app/controller/auth_controller.dart';
 import 'package:blood_app/utils/helper/custom_extensions.dart';
+import 'package:blood_app/views/curated_requests.dart';
 import 'package:blood_app/views/donor_form.dart';
-import 'package:blood_app/views/donors_list.dart';
-import 'package:blood_app/views/home_screen.dart';
 import 'package:blood_app/views/login_screen.dart';
 import 'package:blood_app/views/profile_screen.dart';
 import 'package:blood_app/views/search_blood.dart';
@@ -66,13 +65,13 @@ class MyDrawer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ListTile(
-                title: const Text("Home"),
+                title: const Text("Recent Request"),
                 leading: const Icon(
                   Icons.home_outlined,
                   color: AppColor.darkPrimary,
                 ),
                 onTap: () {
-                  Get.off(() => const HomeScreen());
+                  Get.off(() => const CuratedRequests());
                 },
               ),
               ListTile(
@@ -92,17 +91,9 @@ class MyDrawer extends StatelessWidget {
                   color: AppColor.darkPrimary,
                 ),
                 onTap: () {
-                  Get.to(() => const SearchBlood());
-                },
-              ),
-              ListTile(
-                title: const Text("Donors"),
-                leading: const Icon(
-                  Icons.people_alt_outlined,
-                  color: AppColor.darkPrimary,
-                ),
-                onTap: () {
-                  Get.to(const DonorListScreen());
+                  Get.to(() => const SearchBlood(
+                        hasAppBar: true,
+                      ));
                 },
               ),
               ListTile(
@@ -112,7 +103,9 @@ class MyDrawer extends StatelessWidget {
                   color: AppColor.darkPrimary,
                 ),
                 onTap: () {
-                  Get.to(const DonorForm());
+                  Get.to(DonorForm(
+                    isDonor: authController.user.hasDonor,
+                  ));
                 },
               ),
               ListTile(

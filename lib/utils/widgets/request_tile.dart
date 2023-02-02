@@ -1,13 +1,14 @@
 import 'package:blood_app/utils/helper/custom_extensions.dart';
+import 'package:blood_app/views/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 
 import '../../../utils/widgets/dash_container.dart';
 import '../constants/export.dart';
-import '../helper/global_functions.dart';
 
 class RequestTile extends StatelessWidget {
-  final String requester;
+  final int id;
   final String patientName;
   final String bloodType;
   final int? amount;
@@ -18,7 +19,6 @@ class RequestTile extends StatelessWidget {
 
   const RequestTile({
     Key? key,
-    required this.requester,
     required this.patientName,
     required this.bloodType,
     this.amount,
@@ -26,6 +26,7 @@ class RequestTile extends StatelessWidget {
     required this.address,
     required this.hospital,
     required this.email,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -39,12 +40,12 @@ class RequestTile extends StatelessWidget {
             // An action can be bigger than the others.
 
             onPressed: (context) {
-              launchInCall(phoneNumber);
+              Get.to(ChatScreen(name: patientName, uid: id));
             },
-            backgroundColor: AppColor.darkBlue,
+            backgroundColor: AppColor.orange,
             foregroundColor: Colors.white,
-            icon: Icons.mail_outlined,
-            label: 'Email',
+            icon: Icons.chat_outlined,
+            label: 'Chat',
           ),
           // SlidableAction(
           //   onPressed: (context) {
@@ -64,6 +65,7 @@ class RequestTile extends StatelessWidget {
             Expanded(
               flex: 8,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Tooltip(
@@ -71,7 +73,7 @@ class RequestTile extends StatelessWidget {
                     preferBelow: false,
                     triggerMode: TooltipTriggerMode.tap,
                     child: Text(
-                      requester,
+                      patientName,
                       style: AppStyle.headingStyle(),
                     ).p(5, 0, 0, 5),
                   ),
@@ -93,43 +95,44 @@ class RequestTile extends StatelessWidget {
                       ],
                     ),
                   ).p(5, 0, 0, 5),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text.rich(
-                        TextSpan(
-                          text: 'Email: ', // default text style
-                          style: AppStyle.regularStyle(),
-                          children: <TextSpan>[
-                            TextSpan(text: email, style: AppStyle.semiBold()),
-                          ],
-                        ),
-                      ),
-                      Tooltip(
-                        message: "Press to mail",
-                        child: GestureDetector(
-                          onTap: () {
-                            launchInEmail(email);
-                            print("pressed mail");
-                          },
-                          child: const Icon(
-                            Icons.mail,
-                            color: AppColor.green1,
-                            size: 16,
-                          ),
-                        ),
-                      )
-                    ],
-                  ).p(5, 0, 0, 5),
-                  Text.rich(
-                    TextSpan(
-                      text: 'Requester Name: ', // default text style
-                      style: AppStyle.regularStyle(),
-                      children: <TextSpan>[
-                        TextSpan(text: patientName, style: AppStyle.semiBold()),
-                      ],
-                    ),
-                  ).p(5, 0, 0, 5),
+
+                  // Row(
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   children: [
+                  //     Text.rich(
+                  //       TextSpan(
+                  //         text: 'Email: ', // default text style
+                  //         style: AppStyle.regularStyle(),
+                  //         children: <TextSpan>[
+                  //           TextSpan(text: email, style: AppStyle.semiBold()),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //     Tooltip(
+                  //       message: "Press to mail",
+                  //       child: GestureDetector(
+                  //         onTap: () {
+                  //           launchInEmail(email);
+                  //           print("pressed mail");
+                  //         },
+                  //         child: const Icon(
+                  //           Icons.mail,
+                  //           color: AppColor.green1,
+                  //           size: 16,
+                  //         ),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ).p(5, 0, 0, 5),
+                  // Text.rich(
+                  //   TextSpan(
+                  //     text: 'Requester Name: ', // default text style
+                  //     style: AppStyle.regularStyle(),
+                  //     children: <TextSpan>[
+                  //       TextSpan(text: patientName, style: AppStyle.semiBold()),
+                  //     ],
+                  //   ),
+                  // ).p(5, 0, 0, 5),
                 ],
               ),
             ),
@@ -165,23 +168,6 @@ class RequestTile extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ).p(5),
-                  GestureDetector(
-                    onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context)=>));
-                    },
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.chat_outlined,
-                          size: 16,
-                        ),
-                        Text(
-                          " Chat now",
-                          style: AppStyle.subLightStyle(),
-                        ),
-                      ],
-                    ).pv(10),
-                  ),
                 ],
               ),
             ),

@@ -12,12 +12,12 @@ class ChatService {
   Future<bool> getChatList() async {
     bool res = await Network().getAuthData("/chats").then((res) {
       if (res != null) {
-        print("Res from Chat List-->> $res");
+        print("Res from Chat List-->> ${res.body}");
         if (res.statusCode == 200) {
-          List body = jsonDecode(res.body);
+          var body = jsonDecode(res.body);
           for (var e in body) {
             ChatListModel chatListModel = ChatListModel();
-            chatListModel = ChatListModel.fromJson(e);
+            chatListModel = ChatListModel.fromMap(e);
             chatList.add(chatListModel);
           }
           return true;
@@ -43,6 +43,7 @@ class ChatService {
   Future<bool> getSingleChatList(data) async {
     bool res = await Network().postAuthData(data, "/chats/single").then((res) {
       if (res.statusCode == 200) {
+        print("Single chat list from service---> ${res.body}");
         List body = jsonDecode(res.body);
         for (var e in body) {
           SingleChatListModel singleChatListModel = SingleChatListModel();

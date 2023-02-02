@@ -32,8 +32,9 @@ class RequestService {
     return res;
   }
 
-  Future<void> getRequestList(int type) async {
-    Network().postAuthData({"type": "2"}, "/request/list?type=2").then((res) {
+  Future<bool> getRequestList(int type) async {
+    bool res = await Network()
+        .postAuthData({"type": "2"}, "/request/list?type=2").then((res) {
       var body = jsonDecode(res.body);
       print("From Get Request List----> $body");
       if (res.statusCode == 200) {
@@ -42,15 +43,21 @@ class RequestService {
           request = RequestModel.fromJson(element);
           requestList.add(request);
         }
+        print("Request List from Service--> $requestList");
+        return true;
       } else if (res.statusCode == 500) {
         errorSnackbar("Failed to load",
             "You have encountered unexpected error. Please try again.");
+        return false;
       } else if (res.statusCode == 400) {
         errorSnackbar("Failed to Load", "You are not authorized.");
+        return false;
       } else {
         errorSnackbar(
             "Failed to load", "Something went wrong. Please try again.");
+        return false;
       }
     });
+    return res;
   }
 }

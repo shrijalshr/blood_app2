@@ -3,7 +3,7 @@ import 'dart:convert';
 
 class ChatListModel {
   String? name;
-  String? uid;
+  int? uid;
   ChatListModel({
     this.name,
     this.uid,
@@ -11,7 +11,7 @@ class ChatListModel {
 
   ChatListModel copyWith({
     String? name,
-    String? uid,
+    int? uid,
   }) {
     return ChatListModel(
       name: name ?? this.name,
@@ -29,7 +29,7 @@ class ChatListModel {
   factory ChatListModel.fromMap(Map<String, dynamic> map) {
     return ChatListModel(
       name: map['name'] != null ? map['name'] as String : null,
-      uid: map['uid'] != null ? map['uid'] as String : null,
+      uid: map['uid'] != null ? map['uid'] as int : null,
     );
   }
 

@@ -101,6 +101,15 @@ class _SearchBloodState extends State<SearchBlood> {
                                 onSelected: (bool selected) {
                                   controller.onBGSelect(selected, index);
                                   print(controller.selectedBloodIndex.value);
+                                  var data = {
+                                    "location":
+                                        controller.selectedLocation?.value.id ??
+                                            0,
+                                    "blood_request": MyConstants.bloodGroups[
+                                        controller.selectedBloodIndex.value],
+                                  };
+                                  print(data);
+                                  controller.getDonors(data);
                                 },
                                 backgroundColor:
                                     AppColor.lightGrey.withOpacity(.1),
@@ -138,13 +147,7 @@ class _SearchBloodState extends State<SearchBlood> {
                       color: AppColor.darkPrimary,
                     ),
                     onChange: (value) {
-                      var data = {
-                        "location": value?.id ?? 1,
-                        "blood_request": MyConstants
-                            .bloodGroups[controller.selectedBloodIndex.value],
-                      };
-                      print(data);
-                      controller.getDonors(data);
+                      controller.onLocationChange(value!);
                     },
                   ),
                 ],
@@ -153,32 +156,34 @@ class _SearchBloodState extends State<SearchBlood> {
             const SizedBox(
               height: 20,
             ),
-            controller.isListLoading.value
-                ? const Center(child: CircularProgressIndicator())
-                : controller.donorList.isEmpty
-                    ? Flexible(
-                        child: Center(
-                            child: Image.asset("assets/images/empty.jpg")))
-                    : Flexible(
-                        child: ListView.separated(
-                          itemCount: controller.donorList.length,
-                          physics: const BouncingScrollPhysics(),
-                          padding: const EdgeInsets.only(bottom: 10),
-                          itemBuilder: (context, index) {
-                            final DonorListModel donor =
-                                controller.donorList[index];
-                            return DonorTile(
-                              donorName: donor.name ?? "",
-                              address: donor.address ?? "",
-                              // email: donor.,
-                              phoneNumber: donor.phone ?? "",
-                              bloodType: donor.bloodGroup ?? "",
-                            );
-                          },
-                          separatorBuilder: ((context, index) =>
-                              const Divider()),
+            Obx(
+              () => controller.isListLoading.value
+                  ? const Center(child: CircularProgressIndicator())
+                  : controller.donorList.isEmpty
+                      ? Flexible(
+                          child: Center(
+                              child: Image.asset("assets/images/empty.jpg")))
+                      : Flexible(
+                          child: ListView.separated(
+                            itemCount: controller.donorList.length,
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.only(bottom: 10),
+                            itemBuilder: (context, index) {
+                              final DonorListModel donor =
+                                  controller.donorList[index];
+                              return DonorTile(
+                                id: donor.id ?? 0,
+                                donorName: donor.name ?? "",
+                                address: donor.address ?? "",
+                                phoneNumber: donor.phone ?? "",
+                                bloodType: donor.bloodGroup ?? "",
+                              );
+                            },
+                            separatorBuilder: ((context, index) =>
+                                const Divider()),
+                          ),
                         ),
-                      ),
+            ),
           ],
         ),
       ),

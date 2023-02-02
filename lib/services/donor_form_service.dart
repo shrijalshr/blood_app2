@@ -6,7 +6,7 @@ import '../utils/helper/global_functions.dart';
 
 class DonorFormService {
   Future<bool> postDonorData(data) async {
-    await Network().postAuthData(data, "/donor").then((res) {
+    bool res = await Network().postAuthData(data, "/donor").then((res) {
       var body = jsonDecode(res.body);
       print("From DonorForm Service $body");
       if (res.statusCode == 200) {
@@ -24,6 +24,6 @@ class DonorFormService {
         return false;
       }
     });
-    return false;
+    return res;
   }
 }

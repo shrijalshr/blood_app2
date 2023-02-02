@@ -47,16 +47,17 @@ class AuthService {
             addStringToSP("accessToken", body['access']);
             addStringToSP("refreshToken", body['refresh']);
             return true;
-          } else if (body["status"] == 401) {
+          } else if (res.statusCode == 401) {
             errorSnackbar("Invalid Username/Password",
                 "Username or password did not match. Try again");
             return false;
-          } else if (body["status"] == 400) {
+          } else if (res.statusCode == 400) {
             errorSnackbar(
                 "Invalid Login", "Please provide valid email/password.");
             return false;
-          } else if (body["status"] == 406) {
-            errorSnackbar("", body['error']);
+          } else if (res.statusCode == 406) {
+            errorSnackbar(
+                "Username already exist", "Please try some other username");
             return false;
           } else {
             errorSnackbar("Something went wrong", "Please try again later");
@@ -102,8 +103,8 @@ class AuthService {
   }
 
   DonorModel donorData = DonorModel();
-  getDonorData() async {
-    await Network().getAuthData("/donor").then((res) {
+  Future<bool> getDonorData() async {
+    bool res = await Network().getAuthData("/donor").then((res) {
       if (res != null) {
         print(res);
         if (res.statusCode == 200) {
@@ -113,19 +114,25 @@ class AuthService {
           donor = DonorModel.fromJson(body);
           donorData = donor;
           addJsonToSP("donor_data", donorData);
+          return true;
         } else if (res.statusCode == 500) {
           errorSnackbar("Failed to load",
               "You have encountered unexpected error. Please try again.");
+          return false;
         } else if (res.statusCode == 400) {
           errorSnackbar("Failed to Load", "You are not authorized.");
+          return false;
         } else {
           errorSnackbar(
               "Failed to load", "Something went wrong. Please try again.");
+          return false;
         }
       } else {
         errorSnackbar(
             "Failed to load", "Something went wrong. Please try again.");
+        return false;
       }
     });
+    return res;
   }
 }

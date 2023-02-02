@@ -11,7 +11,7 @@ class DonorService {
   Future<void> getDonorList(data) async {
     await Network().postAuthData(data, "/donor/list").then((res) {
       var body = jsonDecode(res.body);
-      print(body);
+      print("From donor service---> $body");
       if (res.statusCode == 200) {
         for (var e in body) {
           DonorListModel donor = DonorListModel();

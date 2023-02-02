@@ -1,6 +1,8 @@
 import 'package:blood_app/utils/helper/custom_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../views/chat_screen.dart';
 import '../constants/app_color.dart';
 import '../constants/app_styles.dart';
 import '../helper/global_functions.dart';
@@ -14,8 +16,10 @@ class DonorTile extends StatelessWidget {
     required this.address,
     required this.phoneNumber,
     this.email,
+    required this.id,
   }) : super(key: key);
 
+  final int id;
   final String donorName;
   final String bloodType;
   final String address;
@@ -107,6 +111,23 @@ class DonorTile extends StatelessWidget {
                         )
                       ],
                     ).pb(5),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => ChatScreen(name: donorName, uid: id));
+                      },
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.chat_outlined,
+                            size: 16,
+                          ),
+                          Text(
+                            " Chat now",
+                            style: AppStyle.subBoldStyle(),
+                          ),
+                        ],
+                      ).p(5, 0, 0, 5),
+                    ),
                   ],
                 ),
               ),

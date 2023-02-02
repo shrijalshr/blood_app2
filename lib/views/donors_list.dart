@@ -25,22 +25,29 @@ class DonorListScreen extends StatelessWidget {
         titleTextStyle: AppStyle.headingStyle(color: AppColor.darkPrimary),
         iconTheme: const IconThemeData(color: AppColor.darkPrimary),
       ),
-      body: ListView.separated(
-        itemCount: controller.donorList.length,
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.only(bottom: 10),
-        itemBuilder: (context, index) {
-          final DonorListModel donor = controller.donorList[index];
-          return DonorTile(
-            donorName: donor.name ?? "",
-            address: donor.address ?? "",
-            // email: donor.,
-            phoneNumber: donor.phone ?? "",
-            bloodType: donor.bloodGroup ?? "",
-          );
-        },
-        separatorBuilder: ((context, index) => const Divider()),
-      ),
+      body: controller.isListLoading.value
+          ? const CircularProgressIndicator()
+          : controller.donorList.isEmpty
+              ? Center(
+                  child: Image.asset("assets/images/empty.jpg"),
+                )
+              : ListView.separated(
+                  itemCount: controller.donorList.length,
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.only(bottom: 10),
+                  itemBuilder: (context, index) {
+                    final DonorListModel donor = controller.donorList[index];
+                    return DonorTile(
+                      id: donor.id ?? 0,
+                      donorName: donor.name ?? "",
+                      address: donor.address ?? "",
+                      // email: donor.,
+                      phoneNumber: donor.phone ?? "",
+                      bloodType: donor.bloodGroup ?? "",
+                    );
+                  },
+                  separatorBuilder: ((context, index) => const Divider()),
+                ),
     );
   }
 }
