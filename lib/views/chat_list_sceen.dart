@@ -41,7 +41,7 @@ class ChatListScreen extends StatelessWidget {
                           name: chat.name == ''
                               ? "Unknown"
                               : chat.name ?? "Unknown",
-                          uid: chat.uid ?? 0,
+                          uid: chat.uId ?? 0,
                         );
                       },
                       separatorBuilder: (context, index) => const Divider(),

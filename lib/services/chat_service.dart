@@ -17,7 +17,7 @@ class ChatService {
           var body = jsonDecode(res.body);
           for (var e in body) {
             ChatListModel chatListModel = ChatListModel();
-            chatListModel = ChatListModel.fromMap(e);
+            chatListModel = ChatListModel.fromJson(e);
             chatList.add(chatListModel);
           }
           return true;

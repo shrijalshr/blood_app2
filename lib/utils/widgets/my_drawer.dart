@@ -31,14 +31,14 @@ class MyDrawer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const CircleAvatar(
-                  backgroundColor: AppColor.white,
-                  radius: 30,
-                  child: Icon(
-                    Icons.person,
-                    size: 40,
-                  ),
-                ),
+                CircleAvatar(
+                    backgroundColor: AppColor.white,
+                    radius: 30,
+                    child: Text(
+                      authController.user.fname!.characters.first,
+                      style: AppStyle.boldStyle(
+                          color: AppColor.darkBlue, fontSize: 24),
+                    )),
                 const SizedBox(
                   width: 10,
                 ),
@@ -49,7 +49,7 @@ class MyDrawer extends StatelessWidget {
                     Text(
                       "${authController.user.fname} ${authController.user.lname}",
                       style: AppStyle.headingStyle(
-                          color: AppColor.textColor, fontSize: 20),
+                          color: AppColor.darkBlue, fontSize: 20),
                     ).pb(4),
                     // Text(
                     //   "9804320218",
@@ -67,7 +67,7 @@ class MyDrawer extends StatelessWidget {
               ListTile(
                 title: const Text("Recent Request"),
                 leading: const Icon(
-                  Icons.home_outlined,
+                  Icons.bloodtype_outlined,
                   color: AppColor.darkPrimary,
                 ),
                 onTap: () {
@@ -87,7 +87,7 @@ class MyDrawer extends StatelessWidget {
               ListTile(
                 title: const Text("Search For Blood"),
                 leading: const Icon(
-                  Icons.bloodtype_outlined,
+                  Icons.search_outlined,
                   color: AppColor.darkPrimary,
                 ),
                 onTap: () {
@@ -107,14 +107,6 @@ class MyDrawer extends StatelessWidget {
                     isDonor: authController.user.hasDonor,
                   ));
                 },
-              ),
-              ListTile(
-                title: const Text("About Us"),
-                leading: const Icon(
-                  Icons.info_outline,
-                  color: AppColor.darkPrimary,
-                ),
-                onTap: () {},
               ),
               ListTile(
                 title: const Text("Log Out"),

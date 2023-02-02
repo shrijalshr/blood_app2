@@ -19,7 +19,7 @@ class ChatController extends GetxController {
     bool isSuccess = await service.getChatList();
     if (isSuccess) {
       chatList.assignAll(service.chatList);
-      print(chatList);
+      print("from controller $chatList");
     }
     isMessageListLoading.value = false;
   }
