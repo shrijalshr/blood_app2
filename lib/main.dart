@@ -1,3 +1,5 @@
+import 'package:blood_app/controller/auth_controller.dart';
+import 'package:blood_app/views/home_screen.dart';
 import 'package:blood_app/views/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,13 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Blood App',
       theme: ThemeData(),
+      builder: ((context, child) {
+        AuthController controller = Get.put(AuthController());
+        if (controller.isLoggedIn.value) {
+          return const HomeScreen();
+        }
+        return child!;
+      }),
       home: const LoginScreen(),
     );
   }
